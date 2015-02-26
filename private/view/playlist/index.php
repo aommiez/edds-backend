@@ -11,7 +11,7 @@
                 <div class="widget">
                     <!-- Widget heading -->
                     <div class="widget-head">
-                        <h4 class="heading">add: <a href="<?php echo \Main\Helper\URL::absolute("/playlist/add");?>"><i class="icon-document-add" style="font-size: 20px;"></i></a></h4>
+                        <h4 class="heading">Create Playlist : <a href="<?php echo \Main\Helper\URL::absolute("/playlist/add");?>"><i class="icon-document-add" style="font-size: 20px;"></i></a></h4>
                     </div>
                     <!-- // Widget heading END -->
                     <div class="widget-body innerAll inner-2x">
