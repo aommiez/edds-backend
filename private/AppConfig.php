@@ -34,7 +34,6 @@ $configs = array(
                 "server" => "localhost",
                 "username" => 'root',
                 'password' => '111111',
-
                 // optional
                 'port' => 3306,
                 'charset' => 'utf8',
