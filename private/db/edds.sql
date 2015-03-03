@@ -1,76 +1,176 @@
-/*
-Navicat MySQL Data Transfer
+-- phpMyAdmin SQL Dump
+-- version 4.2.11
+-- http://www.phpmyadmin.net
+--
+-- Host: 127.0.0.1
+-- Generation Time: Mar 03, 2015 at 09:59 AM
+-- Server version: 5.6.21
+-- PHP Version: 5.5.19
 
-Source Server         : mysql
-Source Server Version : 50621
-Source Host           : localhost:3306
-Source Database       : edds
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
-Target Server Type    : MYSQL
-Target Server Version : 50621
-File Encoding         : 65001
 
-Date: 2015-02-19 21:02:45
-*/
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
 
-SET FOREIGN_KEY_CHECKS=0;
+--
+-- Database: `edds`
+--
 
--- ----------------------------
--- Table structure for event
--- ----------------------------
-DROP TABLE IF EXISTS `event`;
-CREATE TABLE `event` (
-  `event_id` int(11) NOT NULL AUTO_INCREMENT,
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `device`
+--
+
+CREATE TABLE IF NOT EXISTS `device` (
+`device_id` int(11) NOT NULL,
+  `device_name` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `last_access` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `event`
+--
+
+CREATE TABLE IF NOT EXISTS `event` (
+`event_id` int(11) NOT NULL,
   `event_name` varchar(255) CHARACTER SET utf8 NOT NULL,
   `event_path` varchar(255) CHARACTER SET utf8 NOT NULL,
   `updated_at` int(11) NOT NULL,
-  `event_thumbnail_path` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`event_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+  `event_thumbnail_path` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- ----------------------------
--- Table structure for media
--- ----------------------------
-DROP TABLE IF EXISTS `media`;
-CREATE TABLE `media` (
-  `media_id` int(11) NOT NULL AUTO_INCREMENT,
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `media`
+--
+
+CREATE TABLE IF NOT EXISTS `media` (
+`media_id` int(11) NOT NULL,
   `media_path` varchar(255) CHARACTER SET utf8 NOT NULL,
-  `media_name` varchar(255) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`media_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+  `media_name` varchar(255) CHARACTER SET utf8 NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
 
--- ----------------------------
--- Table structure for news
--- ----------------------------
-DROP TABLE IF EXISTS `news`;
-CREATE TABLE `news` (
-  `news_id` int(11) NOT NULL AUTO_INCREMENT,
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `news`
+--
+
+CREATE TABLE IF NOT EXISTS `news` (
+`news_id` int(11) NOT NULL,
   `news_name` varchar(255) CHARACTER SET utf8 NOT NULL,
   `news_path` varchar(255) CHARACTER SET utf8 NOT NULL,
   `updated_at` int(11) NOT NULL,
-  `news_thumbnail_path` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`news_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+  `news_thumbnail_path` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- ----------------------------
--- Table structure for playlist
--- ----------------------------
-DROP TABLE IF EXISTS `playlist`;
-CREATE TABLE `playlist` (
-  `playlist_id` int(11) NOT NULL AUTO_INCREMENT,
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `playlist`
+--
+
+CREATE TABLE IF NOT EXISTS `playlist` (
+`playlist_id` int(11) NOT NULL,
   `playlist_name` varchar(255) CHARACTER SET utf8 NOT NULL,
-  `version` int(11) NOT NULL,
-  PRIMARY KEY (`playlist_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+  `version` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- ----------------------------
--- Table structure for playlist_media
--- ----------------------------
-DROP TABLE IF EXISTS `playlist_media`;
-CREATE TABLE `playlist_media` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `playlist_media`
+--
+
+CREATE TABLE IF NOT EXISTS `playlist_media` (
+`id` int(11) NOT NULL,
   `playlist_id` int(11) NOT NULL,
   `media_id` int(11) NOT NULL,
-  `sort_number` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1;
+  `sort_number` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `device`
+--
+ALTER TABLE `device`
+ ADD PRIMARY KEY (`device_id`);
+
+--
+-- Indexes for table `event`
+--
+ALTER TABLE `event`
+ ADD PRIMARY KEY (`event_id`);
+
+--
+-- Indexes for table `media`
+--
+ALTER TABLE `media`
+ ADD PRIMARY KEY (`media_id`);
+
+--
+-- Indexes for table `news`
+--
+ALTER TABLE `news`
+ ADD PRIMARY KEY (`news_id`);
+
+--
+-- Indexes for table `playlist`
+--
+ALTER TABLE `playlist`
+ ADD PRIMARY KEY (`playlist_id`);
+
+--
+-- Indexes for table `playlist_media`
+--
+ALTER TABLE `playlist_media`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `device`
+--
+ALTER TABLE `device`
+MODIFY `device_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `event`
+--
+ALTER TABLE `event`
+MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `media`
+--
+ALTER TABLE `media`
+MODIFY `media_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=32;
+--
+-- AUTO_INCREMENT for table `news`
+--
+ALTER TABLE `news`
+MODIFY `news_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `playlist`
+--
+ALTER TABLE `playlist`
+MODIFY `playlist_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `playlist_media`
+--
+ALTER TABLE `playlist_media`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
