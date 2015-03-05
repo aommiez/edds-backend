@@ -8,6 +8,7 @@
 
 namespace Main\CTL;
 use Main\DB\Medoo\MedooFactory;
+use Main\Helper\ResponseHelper;
 use Main\Helper\URL;
 use Main\View\JsonView;
 
@@ -19,20 +20,28 @@ class ApiCTL extends BaseCTL {
     /**
      * @GET
      */
-    public function playlist(){
+    public function playlistDevice(){
         $db = MedooFactory::getInstance();
 
         $table_media = "media";
         $table_playlist = "playlist";
+        $table_device = "device";
         $table = "playlist_media";
 
         $join = array(
             "[>]media"=> array("media_id"=> "media_id")
         );
 
-        $playlist = $db->get($table_playlist, "*", array("playlist_name"=> $_GET['name']));
+        $device = $db->get($table_device, "*", ["device_name"=> $_GET['name']]);
+        if(!$device){
+            $insert = ["device_name"=> $_GET['name'], "register_time"=> time()];
+            $id = $db->insert($table_device, $insert);
+            $device = $db->get($table_device, "*", ["device_id"=> $id]);
+        }
 
-        $items = $db->select($table, $join, '*', ["playlist_id"=> $playlist['playlist_id'], "ORDER"=> "sort_number"]);
+//        $playlist = $db->get($table_playlist, "*", array("playlist_id"=> $device['playlist_id']));
+
+        $items = $db->select($table, $join, '*', ["playlist_id"=> $device['playlist_id'], "ORDER"=> "sort_number"]);
         $prefixdir = 'public/media/';
 
         $ids = array();

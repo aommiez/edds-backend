@@ -37,7 +37,11 @@
                 <div class="widget">
                     <!-- Widget heading -->
                     <div class="widget-head">
-                        <h4 class="heading">Upload File : <a href="<?php echo \Main\Helper\URL::absolute("/media/add");?>"><i class="icon-document-add" style="font-size: 20px;"></i></a></h4>
+                        <form id="add-form">
+                            <progress id="upload-progress" value="0" max="100" class="hidden"></progress>
+                            <input id="media-input" type="file" name="medias[]" accept="video/mp4, image/jpeg, image/png, image/gif" multiple style="display: none;">
+                            <h4 class="heading">Upload File : <a id="click-addfile" href="<?php echo \Main\Helper\URL::absolute("/media/add");?>"><i class="icon-document-add" style="font-size: 20px;"></i></a></h4>
+                        </form>
                     </div>
                     <!-- // Widget heading END -->
                     <div class="widget-body innerAll inner-2x">
@@ -88,6 +92,9 @@
                     </div>
                 </div>
             </div>
+<script src="<?php echo \Main\Helper\URL::absolute("/public");?>/assets/components/modules/admin/notifications/notyfy/assets/lib/js/jquery.notyfy.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>
+<script src="<?php echo \Main\Helper\URL::absolute("/public");?>/assets/components/modules/admin/notifications/notyfy/assets/custom/js/notyfy.init.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>
+
 <link rel="stylesheet" href="<?php echo \Main\Helper\URL::absolute();?>/public/assets/components/common/gallery/prettyphoto/assets/lib/css/prettyPhoto.css">
 <script src="<?php echo \Main\Helper\URL::absolute();?>/public/assets/components/common/gallery/prettyphoto/assets/lib/js/jquery.prettyPhoto.js"></script>
 <script>
@@ -132,5 +139,96 @@
         });
     };
     screenshotPreview();
+</script>
+<script>
+    $(function(){
+        $('#click-addfile').click(function(e){
+            e.preventDefault();
+            $('#media-input').click();
+            return false;
+        });
+
+        $('#media-input').change(function(e){
+            if(e.target.files.length > 0)
+                $('#add-form').submit();
+        });
+
+        // form submit
+        $('#add-form').submit(function(e){
+            e.preventDefault();
+            var fd = new FormData(this);
+
+            var inputs = $(":input", this);
+            inputs.prop("disabled", true);
+
+            var $progress = $('#upload-progress');
+
+            $.ajax({
+                type: 'POST',
+                url: '<?php echo \Main\Helper\URL::absolute("/media/add");?>',
+                data: fd,
+                contentType: false,
+                xhr: function()
+                {
+                    $progress.removeClass("hidden");
+
+                    var xhr = new window.XMLHttpRequest();
+                    //Upload progress
+                    xhr.upload.addEventListener("progress", function(evt){
+                        if (evt.lengthComputable) {
+                            var percentComplete = evt.loaded / evt.total;
+                            percentComplete = percentComplete * 100;
+                            $progress.val(percentComplete);
+                            //Do something with upload progress
+                        }
+                    }, false);
+                    //Download progress
+                    xhr.addEventListener("progress", function(evt){
+                        if (evt.lengthComputable) {
+                            var percentComplete = evt.loaded / evt.total;
+                            percentComplete = percentComplete * 100;
+                            $progress.attr('valut', percentComplete);
+                            //Do something with download progress
+                        }
+                    }, false);
+                    return xhr;
+                },
+                success: function(data){
+                    if(data.error == undefined){
+                        notyfy({
+                            text: 'Success',
+                            type: 'success',
+                            dismissQueue: true
+                        });
+                        setTimeout(function(){ window.location.reload(); }, 1000);
+                    }
+                    else {
+                        notyfy({
+                            text: data.error.message,
+                            type: 'error',
+                            dismissQueue: true,
+                            timeout: 3000
+                        });
+                        inputs.prop("disabled", false);
+                        $progress.addClass("hidden");
+                    }
+                },
+                error: function(){
+                    notyfy({
+                        text: 'No success',
+                        type: 'error',
+                        dismissQueue: true,
+                        timeout: 3000
+                    });
+                    inputs.prop("disabled", false);
+                    $progress.addClass("hidden");
+                },
+                dataType: 'json',
+                processData: false
+            });
+
+            return false;
+        });
+    });
 </script>
 <?php $this->import("/layout/footer"); ?>

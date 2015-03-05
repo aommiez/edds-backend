@@ -21,7 +21,7 @@
                             <thead>
                             <tr>
                                 <th class="center">No.</th>
-                                <th>Device Name</th>
+                                <th>Playlist Name</th>
                                 <th></th>
                             </tr>
                             </thead>

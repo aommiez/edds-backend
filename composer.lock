@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5091bd01354b63f44714fdb101e42e23",
+    "hash": "c57baffd9875640d3c43ab643ec0242d",
     "packages": [
         {
             "name": "altorouter/altorouter",
@@ -796,6 +796,60 @@
                 "rest"
             ],
             "time": "2015-02-11 04:16:30"
+        },
+        {
+            "name": "php-console/php-console",
+            "version": "3.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/barbushin/php-console.git",
+                "reference": "1e6ebef04363fa86ddab9f9998ce537147ab9636"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/barbushin/php-console/zipball/1e6ebef04363fa86ddab9f9998ce537147ab9636",
+                "reference": "1e6ebef04363fa86ddab9f9998ce537147ab9636",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "suggest": {
+                "php-console/laravel-service-provider": "*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "PhpConsole": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD 3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sergey Barbushin",
+                    "email": "barbushin@gmail.com",
+                    "homepage": "http://linkedin.com/in/barbushin"
+                }
+            ],
+            "description": "Server side PHP library for Google Chrome extension \"PHP Console\".",
+            "homepage": "https://github.com/barbushin/php-console",
+            "keywords": [
+                "chrome",
+                "debug",
+                "error handler",
+                "errors",
+                "google chrome",
+                "php"
+            ],
+            "time": "2014-02-03 13:42:12"
         },
         {
             "name": "symfony/console",

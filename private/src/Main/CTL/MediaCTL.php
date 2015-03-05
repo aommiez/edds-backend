@@ -7,6 +7,7 @@
  */
 
 namespace Main\CTL;
+use Main\DB\Medoo\MedooFactory;
 use Main\Helper\URL;
 use Main\Service\MediaService;
 use Main\View\HtmlView;
@@ -26,20 +27,20 @@ class MediaCTL extends BaseCTL {
     }
 
     /**
-     * @GET
-     * @uri /add
-     */
-    public function actionAddForm(){
-        return new HtmlView("/media/add");
-    }
-
-    /**
      * @POST
      * @uri /add
      */
     public function actionAdd(){
-        MediaService::add($this->reqInfo->params(), $this->reqInfo->files());
-        return new RedirectView(URL::absolute()."/media");
+        try {
+            MediaService::add($this->reqInfo->files());
+//            return new RedirectView(URL::absolute()."/media");
+            return [
+                "success"=> true
+            ];
+        }
+        catch (\Exception $e) {
+
+        }
     }
 
     /**

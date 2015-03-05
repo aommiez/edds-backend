@@ -10,54 +10,50 @@ namespace Main\Service;
 
 
 use Main\DB\Medoo\MedooFactory;
+use Main\Helper\ResponseHelper;
+use Main\Http\FileUpload;
 
 class MediaService {
     const TABLE = "media", TABLE_PLAYLIST_MEDIA = "playlist_media", TABLE_PLAYLIST = "playlist", PREFIX = "public/media/";
-    public static function add($param, $files){
-        if(!isset($files['media']) || !is_uploaded_file($files['media']['tmp_name'])){
-            echo 'required media upload';
-            self::http_refresh();
-            exit();
+    public static function add($files){
+        /**
+         * @var FileUpload[] $fileuploads;
+         */
+        $fileuploads = [];
+        foreach($files["medias"]["name"] as $key=> $value){
+            if(!isset($files['medias']) || !is_uploaded_file($files['medias']['tmp_name'][$key])){
+                return ResponseHelper::error('required media upload');
+            }
+
+            $fileupload = FileUpload::load(["name"=> $value, "tmp_name"=> $files["medias"]["tmp_name"][$key]]);
+            if(!in_array($fileupload->getExt(), array("mp4", "jpg", "jpeg", "png", "gif"))){
+                echo 'You can upload mp4, jpeg, png, gif';
+                self::http_refresh();
+                exit();
+            }
+            $fileuploads[] = $fileupload;
         }
-        $mediaUpload = $files["media"];
 
         $db = MedooFactory::getInstance();
-        if($db->count(self::TABLE, array("media_name"=> $param["media_name"])) > 0){
-            echo 'duplicate media name';
-            self::http_refresh();
-            exit();
+
+        foreach($fileuploads as $key=> $fileupload){
+            $newname = $fileupload->generateName(true);
+            $des = self::PREFIX.$newname;
+            $fileupload->move($des);
+
+            $insert = array(
+                "media_path"=> $newname,
+                "media_name"=> $fileupload->getOriginalName()
+            );
+
+            $id = $db->insert(self::TABLE, $insert);
+            if(!$id){
+                $error = $db->error();
+                return ResponseHelper::error($error[0]);
+            }
         }
 
-        $name = $mediaUpload['name'];
-        $ext = array_pop(explode('.', $name));
-
-        // allow mp4, mov, jpg, jpeg, png, gif
-        if(!in_array($ext, array("mp4", "jpg", "jpeg", "png", "gif"))){
-            echo 'you can upload media mp4 only';
-            self::http_refresh();
-            exit();
-        }
-        $newname = uniqid('media').'.'.$ext;
-        $des = self::PREFIX.$newname;
-
-        if(!move_uploaded_file($mediaUpload['tmp_name'], $des)){
-            echo 'media not upload';
-            self::http_refresh();
-            exit();
-        }
-
-        $insert = array(
-            "media_path"=> $newname,
-            "media_name"=> $_POST["media_name"]
-        );
-
-        $id = $db->insert(self::TABLE, $insert);
-        if(!$id){
-            var_dump($db->error());
-            exit();
-        }
-
-        return self::get($id);
+        return ['success'=> true];
     }
 
     public static function delete($id){

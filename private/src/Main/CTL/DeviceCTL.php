@@ -26,52 +26,30 @@ class DeviceCTL extends  BaseCTL {
     }
 
     /**
-     * @GET
-     * @uri /add
+     * @POST
+     * @uri /change_playlist
      */
-    public function addForm(){
-        return new HtmlView("/device/add");
+    public function changePlaylist(){
+        $device_id = $this->reqInfo->param("device_id");
+        $playlist_id = $this->reqInfo->param("playlist_id");
+        return DeviceService::getInstance()->changePlaylist($device_id, $playlist_id);
+    }
+
+    /**
+     * @GET
+     * @uri /no_approve
+     */
+    public function listNoApprove(){
+        $last_id = $this->reqInfo->param("last_id");
+        return DeviceService::getInstance()->listNoApprove($last_id);
     }
 
     /**
      * @POST
-     * @uri /add
+     * @uri /approve_device
      */
-    public function add(){
-        DeviceService::add($this->reqInfo->params(), $this->reqInfo->files());
-
-        return new RedirectView(URL::absolute("/device"));
-    }
-
-    /**
-     * @GET
-     * @uri /delete/[i:id]
-     */
-    public function delete(){
-        $id = $this->reqInfo->urlParam("id");
-        DeviceService::delete($id);
-
-        return new RedirectView(URL::absolute("/device"));
-    }
-
-    /**
-     * @GET
-     * @uri /edit/[i:id]
-     */
-    public function editForm(){
-        $id = $this->reqInfo->urlParam("id");
-
-        return new HtmlView("/device/edit", ["device_id"=> $id]);
-    }
-
-    /**
-     * @POST
-     * @uri /edit/[i:id]
-     */
-    public function edit(){
-        $id = $this->reqInfo->urlParam("id");
-        DeviceService::edit($id, $this->reqInfo->params(), $this->reqInfo->files());
-
-        return new RedirectView(URL::absolute("/device"));
+    public function approveDevice(){
+        $device_id = $this->reqInfo->param("device_id");
+        return DeviceService::getInstance()->approveDevice($device_id);
     }
 }
