@@ -14,7 +14,7 @@ use Main\Helper\ResponseHelper;
 use Main\Http\FileUpload;
 
 class MediaService {
-    const TABLE = "media", TABLE_PLAYLIST_MEDIA = "playlist_media", TABLE_PLAYLIST = "playlist", PREFIX = "public/media/";
+    const TABLE = "media", TABLE_PLAYLIST_MEDIA = "playlist_media", TABLE_PLAYLIST = "playlist", TABLE_DEVICE = "device", PREFIX = "public/media/";
     public static function add($files){
         /**
          * @var FileUpload[] $fileuploads;
@@ -74,6 +74,7 @@ class MediaService {
             ), array(
                 "playlist_id"=> $playlist["playlist_id"]
             ));
+            $db->update(self::TABLE_DEVICE, ["version[+]"=> 1], ["playlist_id"=> $playlist["playlist_id"]]);
         }
 
         $db->delete(self::TABLE, [

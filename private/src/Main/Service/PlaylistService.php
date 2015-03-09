@@ -14,7 +14,7 @@ use Main\Helper\URL;
 use Main\View\RedirectView;
 
 class PlaylistService {
-    const TABLE = "playlist", TABLE_PLAYLIST_MEDIA = "playlist_media";
+    const TABLE = "playlist", TABLE_PLAYLIST_MEDIA = "playlist_media", TABLE_DEVICE = "device";
     public static function add($params){
         $insert = array(
             "playlist_name"=> $params['playlist_name']

@@ -37,7 +37,7 @@ class PlaylistCTL extends BaseCTL {
      * @uri /add
      */
     public function actionAdd(){
-        PlaylistService::add($this->reqInfo->params(), $this->reqInfo->files());
+        PlaylistService::add($this->reqInfo->params());
         return new RedirectView(URL::absolute()."/playlist");
     }
 

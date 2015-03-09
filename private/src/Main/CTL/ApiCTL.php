@@ -63,6 +63,7 @@ class ApiCTL extends BaseCTL {
             }
         }
 
+        $playlist["version"] = $device["version"];
         $playlist["medias_play"] = $items;
         $playlist["medias"] = $medias2;
         $playlist["base_url"] = URL::absolute("/")."public/media/";

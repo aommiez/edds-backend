@@ -16,7 +16,7 @@ class DeviceService extends BaseService {
 
     public function changePlaylist($device_id, $playlist_id){
         $db = MedooFactory::getInstance();
-        $db->update($this->device_table, ['playlist_id'=> $playlist_id], ["device_id"=> $device_id]);
+        $db->update($this->device_table, ['playlist_id'=> $playlist_id, "version[+]"=> 1], ["device_id"=> $device_id]);
 
         return ["success"=> true];
     }

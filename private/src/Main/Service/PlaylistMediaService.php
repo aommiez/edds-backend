@@ -12,7 +12,7 @@ namespace Main\Service;
 use Main\DB\Medoo\MedooFactory;
 
 class PlaylistMediaService {
-    const TABLE_PLAYLIST_MEDIA = "playlist_media", TABLE_PLAYLIST = "playlist", PREFIX = "public/media/";
+    const TABLE_PLAYLIST_MEDIA = "playlist_media", TABLE_PLAYLIST = "playlist", TABLE_DEVICE = "device", PREFIX = "public/media/";
     public static function add($playlist_id, $params){
         $db = MedooFactory::getInstance();
 
@@ -42,6 +42,7 @@ class PlaylistMediaService {
         $db->update(self::TABLE_PLAYLIST, $update, array(
             "playlist_id"=> $playlist_id
         ));
+        $db->update(self::TABLE_DEVICE, ["version[+]"=> 1], ["playlist_id"=> $playlist_id]);
 
         return [
             "success"=> true
@@ -60,6 +61,7 @@ class PlaylistMediaService {
         $db->delete(self::TABLE_PLAYLIST_MEDIA, array("id"=> $id));
 
         $db->update(self::TABLE_PLAYLIST, array("version"=> $playlist["version"] + 1), array("playlist_id"=> $playlist_id));
+        $db->update(self::TABLE_DEVICE, ["version[+]"=> 1], ["playlist_id"=> $playlist_id]);
 
         return ["success"=> true];
     }
